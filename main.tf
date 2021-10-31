@@ -50,6 +50,26 @@ module "transit_azure_1" {
 
   ha_gw = "false"
   name = "avazhub"
+  instance_size = "D2s_v3"
+
+}
+
+
+module "spoke_azure_1" {
+  source  = "terraform-aviatrix-modules/azure-spoke/aviatrix"
+  version = "4.0.1"
+
+  count = 2
+
+  name = "avazsp${count.index}"
+  cidr = var.azure_spoke_cidrs[count.index]
+  region = "West Europe"
+  account = "EskimooAzure"
+  transit_gw = "avx-avazhub-transit"
+  vnet_subnet_size = "24"
+  ha_gw = "false"
+  
+  instance_size = "D2s_v3"
 
 }
   
