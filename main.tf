@@ -16,7 +16,7 @@
 #   instance_size = "t2.micro"
 
   
-}
+#}
 
 #  Build the AWS Spokes
 
@@ -50,7 +50,7 @@ module "transit_azure_1" {
 
   ha_gw = "false"
   name = "avazhub"
-  instance_size = "D2s_v3"
+  instance_size = "Standard_B1ms"
 
 }
 
@@ -69,7 +69,7 @@ module "spoke_azure_1" {
   vnet_subnet_size = "24"
   ha_gw = "false"
   
-  instance_size = "B1ms"
+  instance_size = "Standard_B1ms"
 
 }
   
