@@ -3,17 +3,17 @@
 
 # Build the AWS Transit 
 
-module "transit_aws_1" {
-  source  = "terraform-aviatrix-modules/aws-transit/aviatrix"
-  version = "v4.0.3"
+# module "transit_aws_1" {
+#   source  = "terraform-aviatrix-modules/aws-transit/aviatrix"
+#   version = "v4.0.3"
 
-  cidr = "10.77.0.0/20"
-  region = "eu-central-1"
-  account = "Eskimoo"
+#   cidr = "10.77.0.0/20"
+#   region = "eu-central-1"
+#   account = "Eskimoo"
 
-  name = "avffhub"
-  ha_gw = "false"
-  instance_size = "t2.micro"
+#   name = "avffhub"
+#   ha_gw = "false"
+#   instance_size = "t2.micro"
 
   
 }
@@ -69,19 +69,19 @@ module "spoke_azure_1" {
   vnet_subnet_size = "24"
   ha_gw = "false"
   
-  instance_size = "D2s_v3"
+  instance_size = "B1ms"
 
 }
   
-module "transit-peering" {
-  source  = "terraform-aviatrix-modules/mc-transit-peering/aviatrix"
-  version = "1.0.4"
+# module "transit-peering" {
+#   source  = "terraform-aviatrix-modules/mc-transit-peering/aviatrix"
+#   version = "1.0.4"
 
-  transit_gateways = [
-    "avx-avazhub-transit",
-    "avx-avffhub-transit",
+#   transit_gateways = [
+#     "avx-avazhub-transit",
+#     "avx-avffhub-transit",
     
-  ]
+#   ]
 
   
-}
+# }
