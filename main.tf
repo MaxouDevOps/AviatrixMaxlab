@@ -56,8 +56,9 @@ module "transit_azure_1" {
 
 
 module "spoke_azure_1" {
-  source  = "terraform-aviatrix-modules/azure-spoke/aviatrix"
-  version = "4.0.1"
+  # source  = "terraform-aviatrix-modules/azure-spoke/aviatrix"
+  # version = "4.0.1"
+  source = "https://github.com/Eskimoodigital/Eskimoo_Tfm_Avi_Azu_Spoke_wVM/blob/fd9dcf9b5dac3da36242283d04da24d55a5a1ca2/main.tf"
 
   count = 2
 
