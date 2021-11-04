@@ -1,44 +1,45 @@
 
 
 
-# Build the AWS Transit 
+#Build the AWS Transit 
 
-# module "transit_aws_1" {
-#   source  = "terraform-aviatrix-modules/aws-transit/aviatrix"
-#   version = "v4.0.3"
+module "transit_aws_1" {
+  source  = "terraform-aviatrix-modules/aws-transit/aviatrix"
+  version = "v4.0.3"
 
-#   cidr = "10.77.0.0/20"
-#   region = "eu-central-1"
-#   account = "Eskimoo"
+  cidr = "10.77.0.0/20"
+  region = "eu-central-1"
+  account = "Eskimoo"
 
-#   name = "avffhub"
-#   ha_gw = "false"
-#   instance_size = "t2.micro"
+  name = "avffhub"
+  ha_gw = "false"
+  instance_size = "t2.micro"
 
   
-#}
+}
 
-#  Build the AWS Spokes
+ #Build the AWS Spokes
 
-# module "spoke_aws" {
-#   source  = "Eskimoodigital/aws-spoke-ec2/aviatrix"
-#   version = "1.0.14"
+module "spoke_aws" {
+  source  = "Eskimoodigital/aws-spoke-ec2/aviatrix"
+  version = "1.0.14"
 
-#   count = 2
+  count = 2
 
-#   name            = "avffsp${count.index}"
-#   cidr            = var.spoke_cidrs[count.index]
-#   region          = "eu-central-1"
-#   account         = "Eskimoo"
-#   transit_gw      = "avx-avffhub-transit"
-#   vpc_subnet_size = "24"
+  name            = "avffsp${count.index}"
+  cidr            = var.spoke_cidrs[count.index]
+  region          = "eu-central-1"
+  account         = "Eskimoo"
+  transit_gw      = "avx-avffhub-transit"
+  vpc_subnet_size = "24"
 
-#   ha_gw = "false"
-#   instance_size = "t2.micro"
+  ha_gw = "false"
+  instance_size = "t2.micro"
 
-#   ec2_key = "KP_AVI_EC2_SPOKE"
-# }
+  ec2_key = "KP_AVI_EC2_SPOKE"
+}
 
+#Build the Azure Transit
 
 module "transit_azure_1" {
   source  = "terraform-aviatrix-modules/azure-transit/aviatrix"
@@ -54,6 +55,8 @@ module "transit_azure_1" {
 
 }
 
+
+#Build the Azure Spokes
 
 module "spoke_azure_1" {
   # source  = "terraform-aviatrix-modules/azure-spoke/aviatrix"
@@ -75,20 +78,23 @@ module "spoke_azure_1" {
 }
   
 
+#Build the AWS Azure Transit Peering
 
+module "transit-peering" {
+  source  = "terraform-aviatrix-modules/mc-transit-peering/aviatrix"
+  version = "1.0.4"
 
-# module "transit-peering" {
-#   source  = "terraform-aviatrix-modules/mc-transit-peering/aviatrix"
-#   version = "1.0.4"
-
-#   transit_gateways = [
-#     "avx-avazhub-transit",
-#     "avx-avffhub-transit",
+  transit_gateways = [
+    "avx-avazhub-transit",
+    "avx-avffhub-transit",
     
-#   ]
+  ]
 
   
-# }
+}
+
+#Build the Azure VMs
+
 
 module "vm_azure_1" {
   # source  = "terraform-aviatrix-modules/azure-spoke/aviatrix"
@@ -104,73 +110,8 @@ module "vm_azure_1" {
   rg_name       = "vmrg${count.index}"
   publicip_name = "vmpip${count.index}"
 
-  # depends_on = [
-  #   module.spoke_azure_1
- # ]
+  
 }
   
 
 
-
-
-# output "vnet_for_vm" {
-#   value = module.spoke_azure_1[1].vnet
-# }
-
-# resource "azurerm_resource_group" "example" {
-#   name     = "RGEskTfm"
-#   location = "West Europe"
-# }
-
-# resource "azurerm_network_interface" "example" {
-#   name                = "example-nic"
-#   location            = azurerm_resource_group.example.location
-#   resource_group_name = azurerm_resource_group.example.name
-
-
-#   ip_configuration {
-#     name                          = "internal"
-#     #subnet_id                     = aviatrix_vpc.default[0].subnets[2].subnet_id
-#     subnet_id                     = module.spoke_azure_1[0].vnet.subnets[0].subnet_id
-#     private_ip_address_allocation = "Dynamic"
-#     public_ip_address_id          = azurerm_public_ip.example.id
-
-
-#   }
-# }
-
-# resource "azurerm_public_ip" "example" {
-#   name                = "EskimooPublicIp1"
-#   resource_group_name = azurerm_resource_group.example.name
-#   location            = azurerm_resource_group.example.location
-
-#   allocation_method = "Dynamic"
-
-# }
-
-
-# resource "azurerm_linux_virtual_machine" "example" {
-#   name                = "EskimooTest"
-#   resource_group_name = azurerm_resource_group.example.name
-#   location            = azurerm_resource_group.example.location
-
-#   size                            = "Standard_F2"
-#   disable_password_authentication = false
-#   admin_username                  = "adminuser"
-#   admin_password                  = "Password123!"
-#   network_interface_ids = [
-#     azurerm_network_interface.example.id,
-#   ]
-
-#   os_disk {
-#     caching              = "ReadWrite"
-#     storage_account_type = "Standard_LRS"
-#   }
-
-#   source_image_reference {
-#     publisher = "Canonical"
-#     offer     = "UbuntuServer"
-#     sku       = "16.04-LTS"
-#     version   = "latest"
-#   }
-# }
