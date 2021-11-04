@@ -97,11 +97,11 @@ module "vm_azure_1" {
 
   count = 2
 
-  name = "vmazsp${count.index}"
-  cidr = module.spoke_azure_1[count.index].vnet.subnets[0].subnet_id
-  nic_name = "vmnic${count.index}"
-  ip_name = "vmip${count.index}"
-  rg_name = "vmrg${count.index}"
+  name          = "vmazsp${count.index}"
+  cidr          = module.spoke_azure_1[count.index].vnet.subnets[0].subnet_id
+  nic_name      = "vmnic${count.index}"
+  ip_name       = "vmip${count.index}"
+  rg_name       = "vmrg${count.index}"
   publicip_name = "vmpip${count.index}"
 
   # depends_on = [
