@@ -99,6 +99,10 @@ module "vm_azure_1" {
 
   name = "vmazsp${count.index}"
   cidr = module.spoke_azure_1[count.index].vnet.subnets[0].subnet_id
+
+  depends_on = [
+    module.spoke_azure_1
+  ]
 }
   
 
