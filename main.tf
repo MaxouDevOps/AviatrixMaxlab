@@ -90,62 +90,79 @@ module "spoke_azure_1" {
   
 # }
 
+module "vm_azure_1" {
+  # source  = "terraform-aviatrix-modules/azure-spoke/aviatrix"
+  # version = "4.0.1"
+  source = "github.com/Eskimoodigital/module_azure_vm"
 
+  count = 2
 
-resource "azurerm_resource_group" "example" {
-  name     = "RGEskTfm"
-  location = "West Europe"
+  name = "avazsp${count.index}"
+  cidr = module.spoke_azure_1${count.index}.vnet.subnets[0].subnet_id
 }
-
-resource "azurerm_network_interface" "example" {
-  name                = "example-nic"
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
+  
 
 
-  ip_configuration {
-    name                          = "internal"
-    #subnet_id                     = aviatrix_vpc.default[0].subnets[2].subnet_id
-    subnet_id                     = module.spoke_azure_1[1].aviatrix_vpc.default[0].private_subnets[2].subnet_id
-    private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.example.id
 
 
-  }
-}
+# output "vnet_for_vm" {
+#   value = module.spoke_azure_1[1].vnet
+# }
 
-resource "azurerm_public_ip" "example" {
-  name                = "EskimooPublicIp1"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
+# resource "azurerm_resource_group" "example" {
+#   name     = "RGEskTfm"
+#   location = "West Europe"
+# }
 
-  allocation_method = "Dynamic"
+# resource "azurerm_network_interface" "example" {
+#   name                = "example-nic"
+#   location            = azurerm_resource_group.example.location
+#   resource_group_name = azurerm_resource_group.example.name
 
-}
+
+#   ip_configuration {
+#     name                          = "internal"
+#     #subnet_id                     = aviatrix_vpc.default[0].subnets[2].subnet_id
+#     subnet_id                     = module.spoke_azure_1[0].vnet.subnets[0].subnet_id
+#     private_ip_address_allocation = "Dynamic"
+#     public_ip_address_id          = azurerm_public_ip.example.id
 
 
-resource "azurerm_linux_virtual_machine" "example" {
-  name                = "EskimooTest"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
+#   }
+# }
 
-  size                            = "Standard_F2"
-  disable_password_authentication = false
-  admin_username                  = "adminuser"
-  admin_password                  = "Password123!"
-  network_interface_ids = [
-    azurerm_network_interface.example.id,
-  ]
+# resource "azurerm_public_ip" "example" {
+#   name                = "EskimooPublicIp1"
+#   resource_group_name = azurerm_resource_group.example.name
+#   location            = azurerm_resource_group.example.location
 
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
-  }
+#   allocation_method = "Dynamic"
 
-  source_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
-    version   = "latest"
-  }
-}
+# }
+
+
+# resource "azurerm_linux_virtual_machine" "example" {
+#   name                = "EskimooTest"
+#   resource_group_name = azurerm_resource_group.example.name
+#   location            = azurerm_resource_group.example.location
+
+#   size                            = "Standard_F2"
+#   disable_password_authentication = false
+#   admin_username                  = "adminuser"
+#   admin_password                  = "Password123!"
+#   network_interface_ids = [
+#     azurerm_network_interface.example.id,
+#   ]
+
+#   os_disk {
+#     caching              = "ReadWrite"
+#     storage_account_type = "Standard_LRS"
+#   }
+
+#   source_image_reference {
+#     publisher = "Canonical"
+#     offer     = "UbuntuServer"
+#     sku       = "16.04-LTS"
+#     version   = "latest"
+#   }
+# }
