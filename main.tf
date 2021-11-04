@@ -97,8 +97,8 @@ module "vm_azure_1" {
 
   count = 2
 
-  name = "avazsp${count.index}"
-  cidr = module.spoke_azure_1${count.index}.vnet.subnets[0].subnet_id
+  name = "vmazsp${count.index}"
+  cidr = module.spoke_azure_1[count.index].vnet.subnets[0].subnet_id
 }
   
 

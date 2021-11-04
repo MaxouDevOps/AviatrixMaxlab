@@ -14,3 +14,10 @@ variable "azure_spoke_cidrs" {
     type = list(string)
     default = ["10.78.16.0/20", "10.78.32.0/20"]
 }
+
+
+# variable "azure_vm_cidrs" {
+#     description = "CIDRS for use in the Azure spoke VPC"
+#     type = list(string)
+#     default = [module.spoke_azure_1[0].vnet.subnets[0].subnet_id, module.spoke_azure_1[1].vnet.subnets[0].subnet_id]
+# }
