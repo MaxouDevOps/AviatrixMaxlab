@@ -100,8 +100,8 @@ module "vm_azure_1" {
   name = "vmazsp${count.index}"
   cidr = module.spoke_azure_1[count.index].vnet.subnets[0].subnet_id
   nicname = "vmnic${count.index}"
-  ipname = "vmnic${count.index}"
-  rgname = "vmnic${count.index}"
+  ipname = "vmip${count.index}"
+  rgname = "vmrg${count.index}"
 
   depends_on = [
     module.spoke_azure_1
