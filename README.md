@@ -1,4 +1,4 @@
-# AviatrixAWSHubSpoke
+# AviatrixAWSHubSpokeAzure
 
 This code launches an Aviatrix Hub and 2 Spoke in both AWS and Azure with 1 VM in each spoke subnet.
 
