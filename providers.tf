@@ -1,6 +1,6 @@
 # Configure Aviatrix provider
 provider "aviatrix" {
-  controller_ip           = "35.162.98.189"
+  controller_ip           = "52.47.84.66"
   username                = "admin"
   password                = var.ctrl_password
   
@@ -9,7 +9,7 @@ provider "aviatrix" {
 
 
 provider "aws" {
-    region = "eu-central-1"
+    region = "eu-west-3"
 }
 
 provider "azurerm" {
